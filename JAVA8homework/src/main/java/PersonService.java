@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PersonService {
@@ -20,7 +21,13 @@ public class PersonService {
   public Stream<Person> getPersonByMasterNumbers(List<MasterNumber> numbers) {
     //TODO: Add the code to return people by numbers
     // Use groupToPeople() method
-    return null;
+    return Optional.ofNullable(
+            this.people.get(numbers.stream()
+                    .map(MasterNumber::getNumber)
+                    .collect(Collectors.toList())))
+            .orElse(Optional.empty())
+            .map(PersonSet::groupToPeople)
+            .orElse(Stream.empty());
   }
 
 }
